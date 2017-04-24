@@ -1,0 +1,390 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="keywords" content="remark,remarkjs,markdown,slideshow,presentation" />
+    <meta name="description" content="A simple, in-browser, markdown-driven slideshow tool." />
+    <title>Remark</title>
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif);
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body {
+        font-family: 'Droid Serif';
+      }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: 400;
+        margin-bottom: 0;
+      }
+      .remark-slide-content h1 { font-size: 3em; }
+      .remark-slide-content h2 { font-size: 2em; }
+      .remark-slide-content h3 { font-size: 1.6em; }
+      .footnote {
+        position: absolute;
+        bottom: 3em;
+      }
+      li p { line-height: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      a, a > code {
+        color: rgb(249, 38, 114);
+        text-decoration: none;
+      }
+      code {
+        background: #e7e8e2;
+        border-radius: 5px;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .remark-code-line-highlighted     { background-color: #373832; }
+      .pull-left {
+        float: left;
+        width: 47%;
+      }
+      .pull-right {
+        float: right;
+        width: 47%;
+      }
+      .pull-right ~ p {
+        clear: both;
+      }
+      #slideshow .slide .content code {
+        font-size: 0.8em;
+      }
+      #slideshow .slide .content pre code {
+        font-size: 0.9em;
+        padding: 15px;
+      }
+      .inverse {
+        background: #272822;
+        color: #777872;
+        text-shadow: 0 0 20px #333;
+      }
+      .inverse h1, .inverse h2 {
+        color: #f3f3f3;
+        line-height: 0.8em;
+      }
+
+      /* Slide-specific styling */
+      #slide-inverse .footnote {
+        bottom: 12px;
+        left: 20px;
+      }
+      #slide-how .slides {
+        font-size: 0.9em;
+        position: absolute;
+        top:  151px;
+        right: 140px;
+      }
+      #slide-how .slides h3 {
+        margin-top: 0.2em;
+      }
+      #slide-how .slides .first, #slide-how .slides .second {
+        padding: 1px 20px;
+        height: 90px;
+        width: 120px;
+        -moz-box-shadow: 0 0 10px #777;
+        -webkit-box-shadow: 0 0 10px #777;
+        box-shadow: 0 0 10px #777;
+      }
+      #slide-how .slides .first {
+        background: #fff;
+        position: absolute;
+        top: 20%;
+        left: 20%;
+        z-index: 1;
+      }
+      #slide-how .slides .second {
+        position: relative;
+        background: #fff;
+        z-index: 0;
+      }
+
+      /* Two-column layout */
+      .left-column {
+        color: #777;
+        width: 20%;
+        height: 92%;
+        float: left;
+      }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+        }
+      .right-column {
+        width: 75%;
+        float: right;
+        padding-top: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+name: inverse
+layout: true
+class: center, middle, inverse
+---
+#A Home Automation System 
+#With Raspberry Pi 
+#and Home Assistant
+.footnote[Bill Zingler - Presented to Annapolis Makerspace Startup on April 25, 2017]
+???
+- Hi, my name is Bill Zingler and I'm an Electrical Engineer by training, but many years ago I was lured to the dark side of the force. Software! 
+
+- I have been working in the field of software development ever since.
+
+- As many of you may already know, especially if you have worked with software engineers and developers, we are inherently lazy.  We are always looking for a tool to reduce the amount of work we have to do.
+
+- Hence, my motivation for home automation.  I can be lazy at home.
+
+- I started playing around with the X10 system in the mid-80s.  Anyone every heard of it?
+
+- I gave up on it in the early 90s when I got very busy being a parent.
+
+- Now that both of my boys are out of the house, I've had some time to look at the current state of the home automation world.  It's a whole lot better than back in the 80s!
+
+- Over the past 9 months, I have been working with the Raspberry Pi and Home Assistant.
+
+- This presentation will give you some information about what I have learned.
+
+- How many of you know what a Raspberry Pi is?
+
+- How many of you have worked with a Raspberry Pi?
+
+- How many of you have heard of Home Assistant?
+---
+#What can it do?
+---
+layout: false
+.left-column[
+  ## What can it do?
+]
+.right-column[
+- Have the lights turn on when you are driving home and are a half mile from home and the sun has set
+
+- Track when your kids came home last night
+
+- Reset the thermostat when no one is home
+
+- Turn on your home entertainment system and dim the lights when it is movie time
+
+- Turn off your outdoor lights when the sun rises
+
+- Serve as a framework for building a home security system
+
+- Integrate with the Amazon Echo for voice commands
+
+- Turn the bedroom light on 5 minutes before the alarm
+
+- On and on ... See [Home Assistant Components](https://home-assistant.io/components/)
+]
+
+???
+- The short answer is a whole lot of automation stuff
+
+- Small sample of what it can be used for
+
+- 639 Home Assistant Components as of April 24, 2017
+
+---
+.left-column[
+##Basic Components
+]
+.right-column[
+- Raspberry Pi - Single Board Computer
+
+- Home Assistant - Home Assistant is an open-source home automation platform running on Python 3
+
+- Z-Wave Controller - plugs into the Raspberry Pi USB interface to provide access to the Z-Wave network
+
+- Z-Wave Devices - various Z-Wave connected devices such as light controllers, sensors
+
+- OwnTracks - IOS and Android application that will report your location to the Raspberry Pi
+
+]
+---
+.left-column[
+##What is a Raspberry Pi?
+![alt text](RaspberryPi3B.jpg)
+]
+.right-column[
+- A 1.2GHz 64-bit quad-core ARMv8 CPU
+
+- 1GB RAM
+
+- Micro SD card slot
+
+- Ethernet port
+
+- 802.11n Wireless LAN
+
+- Bluetooth 4.1 and Bluetooth Low Energy (BLE)
+
+- Full HDMI port
+
+- 4 USB ports
+
+- 40 GPIO pins
+
+- Combined 3.5mm audio jack and composite video
+
+- Camera interface (CSI)
+
+- Display interface (DSI)
+
+- VideoCore IV 3D graphics core
+]
+???
+- About equivalent to a early 90s desktop for computing power
+
+- Much better graphics
+
+- Much better connectivity
+---
+.left-column[
+##What is Home Assistant?
+]
+.right-column[
+- Open-source home automation platform
+
+- Web based user interface (access from mobile, tablet and desktop browsers)
+
+- Monitors the states of various devices in your environment
+
+- Responds to events
+
+- Can track people while keeping your data local
+
+- Maintains a History of events
+
+- Integrates with many different systems such as Amazon Echo and Nest Thermostats
+
+- It grew out of different vendors creating their own silos for their IoT devices
+
+- It uses a configuration file written in YAML
+]
+???
+- Monitored devices: light dimmers, temperator sensors, motion detectors, thermostats
+
+- Events : front door just opened, the sun set, the web interface was activated
+
+- 
+---
+.left-column[
+##What is Z-Wave?
+]
+.right-column[
+- Wireless mesh network - more devices the larger the network can be
+  - Works in the 900 MHz band
+
+- Many different types of devices that work with it
+  - lighting dimmers and switches
+  - locks
+  - thermostats
+  - sensors
+  - alarms/sirens
+  - garage door openers
+  - window coverings
+  - fan controls
+]
+
+???
+- mesh networks are like the old telephone game with the difference of the information typically not getting mangled 
+---
+.left-column[
+##What is Owntracks?
+]
+.right-column[
+- Mobile phone app that reports the GPS position to Home Assistant
+
+- Android and IOS versions
+
+- Uses the lightweight messaging protocol MQTT (Message Queue Telementry Transport)
+  - MQTT can be encrypted for added security
+
+- Has a UI that includes a Google map that shows the location of friends and family
+]
+---
+.left-column[
+##Networks?
+]
+.right-column[
+![alt text](NetworkDiagram.svg)
+]
+???
+- How the position sensing by Owntracks gets to Home Assistant
+- How the Web Browser can send commands to devices from any where in the world
+- How Home Assistant can get the state of the Z-Wave devices
+---
+.left-column[
+##What are the basic system costs?
+]
+.right-column[
+- Raspberry Pi 3 with power supply, case and heat sinks : $50
+
+- 32 GB microSD : $15
+
+- Aeotec Z stick controller : $45
+
+- Z-Wave Light Dimmer : $45
+
+Total : $155
+]
+---
+.left-column[
+##Anyone interested in building a starter system for their home?
+]
+.right-column[
+- A group of 4 to 10 interested people 
+
+- Order all of the components
+
+- Build the systems over a series of 2 to 4 hour meetings
+
+- Gain experience with Raspberry Pi
+
+- Gain experience with Home Assistant
+
+- Requirements:
+  - Funds for the starter hardware (<$200)
+  - Laptop to configure the Raspberry Pi
+]
+---
+name: inverse
+layout: true
+class: center, middle, inverse
+#Questions?
+---
+
+
+
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    <script>
+      var hljs = remark.highlighter.engine;
+    </script>
+    <script src="https://remarkjs.com/remark.language.js"></script>
+    <script>
+      var slideshow = remark.create({
+          highlightStyle: 'monokai',
+          highlightLanguage: 'remark',
+          highlightLines: true
+        }) ;
+    </script>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-44561333-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script');
+        ga.src = 'https://ssl.google-analytics.com/ga.js';
+        var s = document.scripts[0];
+        s.parentNode.insertBefore(ga, s);
+      }());
+    </script>
+  </body>
+</html>
